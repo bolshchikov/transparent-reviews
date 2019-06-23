@@ -16,7 +16,7 @@
     "lint": "prettier --write 'src/**/*.js'",
     "gamma:start": "gamma-cli start-local",
     "gamma:stop": "gamma-cli stop-local",
-    "contract:deploy": "gamma-cli deploy ./contracts/counter.go -name counter -signer user1"
+    "contract:deploy": "gamma-cli deploy ./contracts/reviews.go -name reviews -signer user1"
   },
   "eslintConfig": {
     "extends": "react-app"
