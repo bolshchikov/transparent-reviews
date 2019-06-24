@@ -12,22 +12,12 @@ function App() {
   const { publicKey, privateKey } = createAccount();
   const orbsClient = new Client('http://localhost:8080', 42, 'TEST_NET');
 
-  const getIds = () => {
+  const getReviews = () => {
     const query = orbsClient.createQuery(
       publicKey,
       'reviews',
       'getAll',
       []
-    );
-    return orbsClient.sendQuery(query);
-  };
-
-  const getReview = (id) => {
-    const query = orbsClient.createQuery(
-      publicKey,
-      'reviews',
-      'get',
-      [argString(id)]
     );
     return orbsClient.sendQuery(query);
   }
@@ -48,7 +38,7 @@ function App() {
       <h1>Transparent Reviews</h1>
       <div className="container">
         <article>
-          <List getIds={getIds} getReview={getReview} />
+          <List getReviews={getReviews} />
         </article>
         <article>
           <NewReview onSubmit={submitHandler} />
