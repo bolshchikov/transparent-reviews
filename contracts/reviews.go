@@ -12,7 +12,7 @@ import (
 	"github.com/orbs-network/orbs-contract-sdk/go/sdk/v1/state"
 )
 
-var PUBLIC = sdk.Export(add, get, getAll)
+var PUBLIC = sdk.Export(add, getAll)
 var SYSTEM = sdk.Export(_init)
 
 var ALL_KEY = []byte("__ALL_REVIEWS_KEY__")
@@ -40,20 +40,28 @@ func add(text string) string {
 		timestamp,
 		signer,
 	})
-	state.WriteBytes(key, encoded)
+	state.WriteBytes(hash[:], encoded)
+	state.WriteBytes(ALL_KEY, append(state.ReadBytes(ALL_KEY), key...))
 
-	keyString := fmt.Sprintf("%x", hash)
-
-	currentList := state.ReadString(ALL_KEY)
-	state.WriteString(ALL_KEY, currentList+","+keyString)
-
-	return keyString
+	return fmt.Sprintf("%x", hash)
 }
 
 func getAll() string {
-	return state.ReadString(ALL_KEY)
-}
+	res := make(map[string]string)
+	ids := state.ReadBytes(ALL_KEY)
 
-func get(key string) string {
-	return string(state.ReadBytes([]byte(key)))
+	idLength := 16
+
+	for i := 0; i < len(ids); i += idLength {
+		end := i + idLength
+
+		if end > len(ids) {
+			end = len(ids)
+		}
+
+		id := ids[i:end]
+		res[fmt.Sprintf("%x", id)] = string(state.ReadBytes(id))
+	}
+	encoding, _ := json.Marshal(&res)
+	return string(encoding)
 }
