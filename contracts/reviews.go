@@ -19,7 +19,7 @@ var ALL_KEY = []byte("__ALL_REVIEWS_KEY__")
 
 type Review struct {
 	Data      string `json:"data"`
-	Timestamp uint64 `jspon:"timestamp"`
+	Timestamp uint64 `json:"timestamp"`
 	Author    []byte `json:"author"`
 }
 
